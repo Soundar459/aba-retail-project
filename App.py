@@ -5,7 +5,7 @@ import pickle
 st.title("🛍️ Retail Customer Analytics Dashboard")
 
 # Load data
-df = pd.read_excel("Online Retail.xlsx")
+df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_usa_states.csv")
 df = df.dropna()
 df["TotalPrice"] = df["Quantity"] * df["UnitPrice"]
 

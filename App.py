@@ -4,19 +4,19 @@ import pickle
 
 st.title("🛍️ Retail Customer Analytics Dashboard")
 
-# Load data
+# ✅ Load SMALL online dataset (for deployment)
 df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_usa_states.csv")
-df = df.dropna()
-df["TotalPrice"] = df["Quantity"] * df["UnitPrice"]
 
-# Load model
+# ✅ Load model
 model = pickle.load(open("model.pkl", "rb"))
 
+# Sidebar input
 st.sidebar.header("Customer Input")
 
 frequency = st.sidebar.number_input("Purchase Frequency", min_value=1)
 avg_value = st.sidebar.number_input("Average Order Value", min_value=1.0)
 
+# Prediction
 if st.button("Predict Customer Value"):
     result = model.predict([[frequency, avg_value]])
 
@@ -25,10 +25,10 @@ if st.button("Predict Customer Value"):
     else:
         st.warning("⚠️ Low Value Customer")
 
-st.subheader("📊 Revenue by Country")
-country_data = df.groupby("Country")["TotalPrice"].sum()
-st.bar_chart(country_data)
+# ✅ Correct visualization (based on this dataset)
+st.subheader("📊 Population by State")
+st.bar_chart(df.set_index("State")["Population"])
 
-st.subheader("📦 Top Products")
-top_products = df.groupby("Description")["Quantity"].sum().sort_values(ascending=False).head(10)
-st.bar_chart(top_products)
+# Optional extra chart
+st.subheader("📍 Area by State")
+st.bar_chart(df.set_index("State")["Rank"])
